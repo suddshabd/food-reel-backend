@@ -2,12 +2,9 @@ import app from "./src/app.js";
 import dotenv from "dotenv"
 import connectDB from "./src/db/db.js";
 
-// Load environment variables only in local development
-if (process.env.NODE_ENV !== 'production') {
-    dotenv.config({
-        path: './.env'
-    });
-}
+dotenv.config({
+    path: './.env'
+});
 
 connectDB();
 
@@ -18,4 +15,3 @@ app.listen(PORT, () => {
 });
 
 export default app;
-
