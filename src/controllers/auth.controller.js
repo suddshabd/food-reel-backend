@@ -27,7 +27,14 @@ async function registerUser(req, res) {
     const token = jwt.sign({
         id: user._id,
     }, process.env.JWT_SECRET)
-    res.cookie("token", token)
+    res.cookie("token", token,
+        {
+            httpOnly: true,
+
+        }
+
+    )
+
     res.status(201).json({
         message: "User registered successfully",
         user: {
@@ -56,7 +63,13 @@ async function loginUser(req, res) {
     const token = jwt.sign({
         id: user._id,
     }, process.env.JWT_SECRET)
-    res.cookie("token", token)
+    res.cookie("token", token,
+        {
+            httpOnly: true,
+
+        }
+
+    )
     res.status(201).json({
         message: "User loggedin successfully",
         user: {
@@ -100,7 +113,13 @@ async function registerFoodPartner(req, res) {
     const token = jwt.sign({
         id: foodPartner._id,
     }, process.env.JWT_SECRET)
-    res.cookie("token", token)
+    res.cookie("token", token,
+        {
+            httpOnly: true,
+
+        }
+
+    )
     res.status(201).json({
         message: "Food Partner registered successfully",
         foodPartner: {
@@ -133,7 +152,13 @@ async function loginFoodPartner(req, res) {
     const token = jwt.sign({
         id: foodPartner._id,
     }, process.env.JWT_SECRET)
-    res.cookie("token", token)
+    res.cookie("token", token,
+        {
+            httpOnly: true,
+
+        }
+
+    )
     res.status(201).json({
         message: "Food Partner loggedin successfully",
         foodPartner: {

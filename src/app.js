@@ -2,8 +2,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import userRoutes from "./routes/user.routes.js";
 import foodRoutes from "./routes/food.routes.js";
+import authRouter from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true })); // to parse incoming requests w
 app.use(cookieParser()); // to parse cookies
 
 // routes
-app.use("/api/users", userRoutes);
+app.use("/api/auth", authRouter);
 app.use("/api/food", foodRoutes);
 
 export default app;

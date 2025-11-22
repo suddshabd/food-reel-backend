@@ -1,6 +1,6 @@
 import userModel from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import generateTokenAndSetCookie from "./generateToken.js";
+import jwt from "jsonwebtoken";
 
 export const signup = async (req, res) => {
     try {
@@ -27,14 +27,17 @@ export const signup = async (req, res) => {
         });
 
         if (newUser) {
-            // Generate JWT token and set it as a cookie
-            generateTokenAndSetCookie(newUser._id, res);
             await newUser.save();
+
+            const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
+                expiresIn: "15d",
+            });
 
             res.status(201).json({
                 _id: newUser._id,
                 fullName: newUser.fullName,
                 email: newUser.email,
+                token: token,
             });
         } else {
             res.status(400).json({ error: "Invalid user data" });
@@ -55,12 +58,15 @@ export const login = async (req, res) => {
             return res.status(400).json({ error: "Invalid email or password" });
         }
 
-        generateTokenAndSetCookie(user._id, res);
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+            expiresIn: "15d",
+        });
 
         res.status(200).json({
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
+            token: token,
         });
     } catch (error) {
         console.log("Error in login controller", error.message);
@@ -70,7 +76,6 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
     try {
-        res.cookie("jwt", "", { maxAge: 0 });
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
         console.log("Error in logout controller", error.message);
